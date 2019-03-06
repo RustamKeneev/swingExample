@@ -15,19 +15,9 @@ public class Main {
         JPanel jPanel = new JPanel(new GridBagLayout());
         jPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 
-        XWPFDocument document = new XWPFDocument();
-        FileOutputStream fileOutputStream = new FileOutputStream(new File("text.docx"));
-        XWPFParagraph paragraph = document.createParagraph();
-        XWPFRun run = paragraph.createRun();
-        run.setText("привет");
-
-        document.write(fileOutputStream);
-        fileOutputStream.close();
-        System.out.println("created_new_docx_file");
-
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        JTextField jTextField = new JTextField(5);
+        JTextField jTextField = new JTextField(30);
         constraints.gridx=0;
         constraints.gridy=0;
         jPanel.add(jTextField,constraints);
@@ -35,13 +25,26 @@ public class Main {
         JButton button = new JButton();
         constraints.gridy=0;
         constraints.gridx=1;
-        button.setText("создать запись");
+        button.setText("create");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String text = jTextField.getText();
-                System.out.println(text);
-                run.setText("hello world"+text);
+                try {
+                    XWPFDocument document = new XWPFDocument();
+                    FileOutputStream fileOutputStream = new FileOutputStream(new File("text.docx"));
+                    XWPFParagraph paragraph = document.createParagraph();
+                    XWPFRun run = paragraph.createRun();
+
+                    System.out.println("created_new_docx_file");
+                    String text = jTextField.getText();
+                    System.out.println(text);
+                    run.setText(text);
+
+                    document.write(fileOutputStream);
+                    fileOutputStream.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
